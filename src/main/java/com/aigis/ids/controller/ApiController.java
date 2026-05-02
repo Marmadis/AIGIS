@@ -18,19 +18,28 @@ public class ApiController {
 
     @PostMapping("/keys/abuse")
     public ResponseEntity<String> updateAbuseKey(@RequestBody String newKey) {
-        apiKeyManagerService.setAbuseKey(newKey);
+        if (newKey == null || newKey.isBlank()){
+            return ResponseEntity.badRequest().body("Key cannot be empty");
+        }
+        apiKeyManagerService.setAbuseKey(newKey.trim());
         return ResponseEntity.ok("Abuse API added successfully");
     }
 
     @PostMapping("/key/virustotal")
     public ResponseEntity<String> updateVirusTotalKey(@RequestBody String newKey){
-        apiKeyManagerService.setVirusTotalKey(newKey);
+        if (newKey == null || newKey.isBlank()){
+            return ResponseEntity.badRequest().body("Key cannot be empty");
+        }
+        apiKeyManagerService.setVirusTotalKey(newKey.trim());
         return ResponseEntity.ok("VirusTotal API added successfully");
     }
 
     @PostMapping("/key/ibmxforce")
     public ResponseEntity<String> updateIBMXforce(@RequestBody String newKey){
-        apiKeyManagerService.setIBMXForceKey(newKey);
+        if (newKey == null || newKey.isBlank()){
+            return ResponseEntity.badRequest().body("Key cannot be empty");
+        }
+        apiKeyManagerService.setIBMXForceKey(newKey.trim());
         return  ResponseEntity.ok("IBM X-Force API added successfully");
     }
 }

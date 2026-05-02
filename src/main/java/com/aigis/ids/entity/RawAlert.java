@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "alerts", createIndex = false)
-public class Alert {
+@Document(indexName = "rawalerts", createIndex = false)
+public class RawAlert {
 
     @Id
     private String id = UUID.randomUUID().toString();
