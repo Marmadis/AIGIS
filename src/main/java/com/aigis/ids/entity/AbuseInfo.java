@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "AbuseIPDB_info_about_IP_address",createIndex = false)
+@Document(indexName = "abuseipdb_info_about_ip_address",createIndex = false)
 public class AbuseInfo {
     @Id
     private String id = UUID.randomUUID().toString();

@@ -1,9 +1,13 @@
 package com.aigis.ids.configuration;
 
 import com.aigis.ids.service.APIKeyManagerService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
+
+import java.util.Base64;
 
 @Configuration
 public class ClientConfig {
@@ -14,7 +18,7 @@ public class ClientConfig {
                 this.apiKeyManagerService = apiKeyManagerService;
         }
 
-        @Bean
+           @Bean
         public RestClient abuseIpDbClient() {
             return RestClient.builder()
                     .baseUrl("https://api.abuseipdb.com/api/v2")
@@ -31,7 +35,7 @@ public class ClientConfig {
                 return RestClient.builder()
                         .baseUrl("https://www.virustotal.com/api/v3")
                         .requestInterceptor(((request, body, execution) -> {
-                                request.getHeaders().add("Key",apiKeyManagerService.getVirusTotalKey());
+                                request.getHeaders().add("x-apikey",apiKeyManagerService.getVirusTotalKey());
                                 request.getHeaders().add("Accept", "application/json");
                                 return execution.execute(request,body);
                         }))
@@ -40,10 +44,14 @@ public class ClientConfig {
 
         @Bean
         public RestClient ibmxforceClient(){
-                return RestClient.builder()
+
+            return RestClient.builder()
                         .baseUrl("https://api.xforce.ibmcloud.com/ipr/")
                         .requestInterceptor((request, body, execution) -> {
-                                request.getHeaders().add("Key",apiKeyManagerService.getIBMXForceKey());
+                            String auth = Base64.getEncoder()
+                                    .encodeToString((apiKeyManagerService.getIBMXForceKey() + ":" + apiKeyManagerService.getDefaultIBMXforcePassword()).getBytes());
+
+                            request.getHeaders().add("Authorization", "Basic " + auth);
                                 request.getHeaders().add("Accept", "application/json");
                                 return execution.execute(request,body);
                         })

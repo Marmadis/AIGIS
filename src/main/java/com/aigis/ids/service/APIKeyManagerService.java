@@ -23,11 +23,14 @@ public class APIKeyManagerService {
     @Value("${ibmxforce.api.key}")
     private String defaultIBMXforceKey;
 
+    @Value("${ibmxforce.api.password}")
+    private String defaultIBMXforcePassword;
     @PostConstruct
     public void init() {
         keys.put("ABUSE", defaultAbuseKey);
         keys.put("VIRUSTOTAL",defaultVirusTotalKey);
         keys.put("IBMXFORCE",defaultIBMXforceKey);
+        keys.put("IBMXFORCEPASSWORD",defaultIBMXforcePassword);
     }
 
     public String getAbuseKey() { return keys.get("ABUSE"); }
@@ -38,4 +41,7 @@ public class APIKeyManagerService {
 
     public String getIBMXForceKey() { return keys.get("IBMXFORCE"); }
     public void setIBMXForceKey(String newKey) { keys.put("IBMXFORCE", newKey); }
+
+    public String getDefaultIBMXforcePassword() { return keys.get("IBMXFORCEPASSWORD"); }
+    public void setDefaultIBMXforcePassword(String password) { keys.put("IBMXFORCEPASSWORD", password); }
 }

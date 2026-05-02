@@ -1,8 +1,8 @@
 package com.aigis.ids.repository;
 
-import com.aigis.ids.entity.RawAlert;
+import com.aigis.ids.entity.IBMXforceInfo;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface IBMXforceRepository extends ElasticsearchRepository<RawAlert,String> {
+public interface IBMXforceRepository extends ElasticsearchRepository<IBMXforceInfo,String> {
 
 }

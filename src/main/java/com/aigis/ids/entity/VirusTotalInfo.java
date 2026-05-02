@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "VirusTotal_info_about_IP_address",createIndex = false)
+@Document(indexName = "virustotal_info_about_ip_address",createIndex = false)
 public class VirusTotalInfo {
     @Id
     private String id = UUID.randomUUID().toString();

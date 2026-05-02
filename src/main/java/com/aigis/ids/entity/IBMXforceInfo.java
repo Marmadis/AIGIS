@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "IBMXFore_info_about_IP_address")
+@Document(indexName = "ibmxforce_info_about_ip_address")
 public class IBMXforceInfo {
     @Id
     private String id = UUID.randomUUID().toString();
