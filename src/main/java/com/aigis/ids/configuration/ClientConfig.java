@@ -1,6 +1,6 @@
 package com.aigis.ids.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.aigis.ids.service.APIKeyManagerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
@@ -8,22 +8,21 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class ClientConfig {
 
+        private  final APIKeyManagerService apiKeyManagerService;
 
-        @Value("${abuseipdb.api.key}")
-        private String apiKeyAbuse;
-
-        @Value("${virustotal.api.key}")
-        private String apiKeyVirusTotal;
-
-        @Value("${ibmxforce.api.key}")
-        private String apiKeyIBMXforce;
+        public ClientConfig(APIKeyManagerService  apiKeyManagerService) {
+                this.apiKeyManagerService = apiKeyManagerService;
+        }
 
         @Bean
         public RestClient abuseIpDbClient() {
             return RestClient.builder()
                     .baseUrl("https://api.abuseipdb.com/api/v2")
-                    .defaultHeader("Key", apiKeyAbuse)
-                    .defaultHeader("Accept", "application/json")
+                    .requestInterceptor((request, body, execution) -> {
+                            request.getHeaders().add("Key", apiKeyManagerService.getAbuseKey());
+                            request.getHeaders().add("Accept", "application/json");
+                            return execution.execute(request, body);
+                    })
                     .build();
         }
 
@@ -31,8 +30,11 @@ public class ClientConfig {
         public RestClient virusTotalClient(){
                 return RestClient.builder()
                         .baseUrl("https://www.virustotal.com/api/v3")
-                        .defaultHeader("Key",apiKeyVirusTotal)
-                        .defaultHeader("Accept", "application/json")
+                        .requestInterceptor(((request, body, execution) -> {
+                                request.getHeaders().add("Key",apiKeyManagerService.getVirusTotalKey());
+                                request.getHeaders().add("Accept", "application/json");
+                                return execution.execute(request,body);
+                        }))
                         .build();
         }
 
@@ -40,8 +42,11 @@ public class ClientConfig {
         public RestClient ibmxforceClient(){
                 return RestClient.builder()
                         .baseUrl("https://api.xforce.ibmcloud.com/ipr/")
-                        .defaultHeader("Key",apiKeyIBMXforce)
-                        .defaultHeader("Accept", "application/json")
+                        .requestInterceptor((request, body, execution) -> {
+                                request.getHeaders().add("Key",apiKeyManagerService.getIBMXForceKey());
+                                request.getHeaders().add("Accept", "application/json");
+                                return execution.execute(request,body);
+                        })
                         .build();
         }
 
