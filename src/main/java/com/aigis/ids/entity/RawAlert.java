@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "rawalerts", createIndex = false)
+@Document(indexName = "raw_alerts", createIndex = false)
 public class RawAlert {
 
     @Id
