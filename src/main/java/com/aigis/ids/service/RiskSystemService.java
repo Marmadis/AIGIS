@@ -59,11 +59,11 @@ public class RiskSystemService {
 
         double iocSource = 0.0;
         double iocDestination = 0.0;
-        if(iocRepository.existByIpAddress(rawAlert.getSourceIp())){
+        if(iocRepository.existsByIpAddress(rawAlert.getSourceIp())){
             iocSource = 0.4;
         }
 
-        if(iocRepository.existByIpAddress(rawAlert.getDestinationIp())){
+        if(iocRepository.existsByIpAddress(rawAlert.getDestinationIp())){
             iocSource = 0.4;
         }
 

@@ -14,16 +14,16 @@ public class APIKeyManagerService {
     private final Map<String, String> keys = new ConcurrentHashMap<>();
 
 
-    @Value("${abuseipdb.api.key}")
+    @Value("${abuseipdb.api.key:DEFAULT}")
     private String defaultAbuseKey;
 
-    @Value("${virustotal.api.key}")
+    @Value("${virustotal.api.key:DEFAULT}")
     private String defaultVirusTotalKey;
 
-    @Value("${ibmxforce.api.key}")
+    @Value("${ibmxforce.api.key:DEFAULT}")
     private String defaultIBMXforceKey;
 
-    @Value("${ibmxforce.api.password}")
+    @Value("${ibmxforce.api.password:DEFAULT}")
     private String defaultIBMXforcePassword;
     @PostConstruct
     public void init() {

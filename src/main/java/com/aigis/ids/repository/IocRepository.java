@@ -5,5 +5,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface IocRepository extends ElasticsearchRepository<IndicatorOfCompromise,String> {
 
-    boolean existByIpAddress(String ipAddress);
+    boolean existsByIpAddress(String ipAddress);
 }

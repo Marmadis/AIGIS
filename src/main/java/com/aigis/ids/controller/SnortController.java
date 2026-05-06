@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
         @PostMapping("/snort")
         public ResponseEntity<String> snortAlert(@RequestBody RawAlert alert) {
             alertRepository.save(alert);
-            riskSystemService.riskCalculate(alert);
+            //riskSystemService.riskCalculate(alert);
             System.out.println(alert);
             return ResponseEntity.ok("Received");
         }
