@@ -39,26 +39,41 @@ public class IPSearchInformationService {
     public void analyzeIP(String ip) {
 
         // 1. AbuseIPDB
-        AbuseInfo abuse = abuseClient.get()
-                .uri("/check?ipAddress={ip}", ip)
-                .retrieve()
-                .body(AbuseInfo.class);
+        if(!abuseRepo.existsByIpAddress(ip)) {
+            AbuseInfo abuse = abuseClient.get()
+                    .uri("/check?ipAddress={ip}", ip)
+                    .retrieve()
+                    .body(AbuseInfo.class);
 
+            abuseRepo.save(abuse);
+        }else{
+            System.out.println("[Abuse]Information about IP:"+ip+" already exist");
+        }
         // 2. VirusTotal
-        VirusTotalInfo vt = virusClient.get()
-                .uri("/ip_addresses/{ip}", ip)
-                .retrieve()
-                .body(VirusTotalInfo.class);
-
+        if (!virusRepo.existsByIpAddress(ip)) {
+            VirusTotalInfo vt = virusClient.get()
+                    .uri("/ip_addresses/{ip}", ip)
+                    .retrieve()
+                    .body(VirusTotalInfo.class);
+            virusRepo.save(vt);
+        } else{
+            System.out.println("[VirusTotal]Information about IP:"+ip+" already exist");
+        }
         // 3. IBM X-Force
-        IBMXforceInfo ibm = ibmClient.get()
-                .uri("/{ip}", ip)
-                .retrieve()
-                .body(IBMXforceInfo.class);
-
+        if(!ibmRepo.existsByIpAddress(ip)) {
+            IBMXforceInfo ibm = ibmClient.get()
+                    .uri("/{ip}", ip)
+                    .retrieve()
+                    .body(IBMXforceInfo.class);
+            ibmRepo.save(ibm);
+        }
+        else{
+            System.out.println("[IBM X-Force]Information about IP:"+ip+" already exist");
+        }
         // 4. Сохранение
-        abuseRepo.save(abuse);
-        virusRepo.save(vt);
-        ibmRepo.save(ibm);
+
     }
+
+
+
 }

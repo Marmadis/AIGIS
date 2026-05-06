@@ -6,6 +6,7 @@ import com.aigis.ids.entity.RawAlert;
 import com.aigis.ids.entity.VirusTotalInfo;
 import com.aigis.ids.repository.AbuseRepository;
 import com.aigis.ids.repository.IBMXforceRepository;
+import com.aigis.ids.repository.IocRepository;
 import com.aigis.ids.repository.VirusTotalRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,18 @@ public class RiskSystemService {
     private final AbuseRepository abuseRepository;
     private  final IBMXforceRepository ibmXforceRepository;
     private final VirusTotalRepository virusTotalRepository;
+    private final IocRepository iocRepository;
 
     public  RiskSystemService(IPSearchInformationService ipSearchInformationService,
                               AbuseRepository abuseRepository,
                               IBMXforceRepository ibmXforceRepository,
-                              VirusTotalRepository virusTotalRepository){
+                              VirusTotalRepository virusTotalRepository,
+                              IocRepository iocRepository){
         this.ipSearchInformationService = ipSearchInformationService;
         this.abuseRepository = abuseRepository;
         this.ibmXforceRepository = ibmXforceRepository;
         this.virusTotalRepository = virusTotalRepository;
+        this.iocRepository = iocRepository;
     }
 
     public void riskCalculate(RawAlert rawAlert){
@@ -53,11 +57,21 @@ public class RiskSystemService {
         int ibmSourceScore = parseSafeInt(ibmXforceInfoSource.getSubscore());
         int ibmDestinationScore =parseSafeInt(ibmXforceInfoDestination.getSubscore());
 
+        double iocSource = 0.0;
+        double iocDestination = 0.0;
+        if(iocRepository.existByIpAddress(rawAlert.getSourceIp())){
+            iocSource = 0.4;
+        }
+
+        if(iocRepository.existByIpAddress(rawAlert.getDestinationIp())){
+            iocSource = 0.4;
+        }
+
         double sourceRisk = ( (abuseSourceScore/100)*0.3+
-               (virusTotalSourceScore/94)*0.25+(ibmSourceScore/10)*0.2);
+               (virusTotalSourceScore/94)*0.25+(ibmSourceScore/10)*0.2+iocSource);
 
         double destinationRisk = ( (abuseDestinationScore/100)*0.3+
-                (virusTotalDestinationScore/94)*0.25+(ibmDestinationScore/10)*0.2);
+                (virusTotalDestinationScore/94)*0.25+(ibmDestinationScore/10)*0.2+iocDestination);
 
     }
 
