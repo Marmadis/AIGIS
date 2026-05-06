@@ -1,15 +1,11 @@
 package com.aigis.ids.service;
 
-import com.aigis.ids.dto.AbuseResponse;
-import com.aigis.ids.dto.IBMXForceResponse;
-import com.aigis.ids.dto.VirustotalResponse;
 import com.aigis.ids.entity.AbuseInfo;
 import com.aigis.ids.entity.IBMXforceInfo;
 import com.aigis.ids.entity.VirusTotalInfo;
 import com.aigis.ids.repository.AbuseRepository;
 import com.aigis.ids.repository.IBMXforceRepository;
 import com.aigis.ids.repository.VirusTotalRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

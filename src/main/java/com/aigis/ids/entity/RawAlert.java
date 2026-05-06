@@ -26,10 +26,10 @@ public class RawAlert {
     private String eventName;
 
     @JsonProperty("src_addr")
-    private String source_ip;
+    private String sourceIp;
 
     @JsonProperty("dst_addr")
-    private String destination_ip;
+    private String destinationIp;
 
     private String priority;
 
