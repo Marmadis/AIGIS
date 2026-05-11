@@ -1,11 +1,10 @@
 package com.aigis.ids.configuration;
 
+
 import com.aigis.ids.service.APIKeyManagerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
-
-import java.util.Base64;
 
 @Configuration
 public class ClientConfig {
@@ -40,22 +39,14 @@ public class ClientConfig {
                         .build();
         }
 
-        @Bean
-        public RestClient ibmxforceClient(){
-
-            return RestClient.builder()
-                        .baseUrl("https://api.xforce.ibmcloud.com/ipr/")
-                        .requestInterceptor((request, body, execution) -> {
-                            String auth = Base64.getEncoder()
-                                    .encodeToString((apiKeyManagerService.getIBMXForceKey() + ":" + apiKeyManagerService.getDefaultIBMXforcePassword()).getBytes());
-                            request.getHeaders().add("Authorization", "Basic " + auth);
-                                request.getHeaders().add("Accept", "application/json");
-                                return execution.execute(request,body);
-                        })
-                        .build();
-        }
 
 
+    @Bean
+    public RestClient mlClient() {
+        return RestClient.builder()
+                .baseUrl("http://ml-ai-service:5000") // Лучше оставить только хост
+                .build();
+    }
 
 }
 

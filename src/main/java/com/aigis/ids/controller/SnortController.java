@@ -2,6 +2,7 @@ package com.aigis.ids.controller;
 
 import com.aigis.ids.entity.RawAlert;
 import com.aigis.ids.repository.RawAlertRepository;
+import com.aigis.ids.service.MlService;
 import com.aigis.ids.service.RiskSystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
         private final RiskSystemService riskSystemService;
 
-        public SnortController(RawAlertRepository alertRepository, RiskSystemService riskSystemService) {
+        private  final MlService mlService;
+        public SnortController(RawAlertRepository alertRepository, RiskSystemService riskSystemService, MlService mlService) {
             this.alertRepository = alertRepository;
             this.riskSystemService = riskSystemService;
+            this.mlService = mlService;
         }
 
         @PostMapping("/snort")
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
             alertRepository.save(alert);
             //riskSystemService.riskCalculate(alert);
             System.out.println(alert);
+            mlService.sendTrafficData(alert);
             return ResponseEntity.ok("Received");
         }
 
