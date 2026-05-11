@@ -46,6 +46,7 @@ public class IPSearchInformationService {
                     .body(AbuseInfo.class);
 
             abuseRepo.save(abuse);
+            System.out.println(abuse);
         }else{
             System.out.println("[Abuse]Information about IP:"+ip+" already exist");
         }
@@ -56,6 +57,7 @@ public class IPSearchInformationService {
                     .retrieve()
                     .body(VirusTotalInfo.class);
             virusRepo.save(vt);
+            System.out.println(vt);
         } else{
             System.out.println("[VirusTotal]Information about IP:"+ip+" already exist");
         }
@@ -66,6 +68,7 @@ public class IPSearchInformationService {
                     .retrieve()
                     .body(IBMXforceInfo.class);
             ibmRepo.save(ibm);
+            System.out.println(ibm);
         }
         else{
             System.out.println("[IBM X-Force]Information about IP:"+ip+" already exist");

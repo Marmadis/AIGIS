@@ -1,19 +1,19 @@
 package com.aigis.ids.controller;
 
 import com.aigis.ids.service.APIKeyManagerService;
+import com.aigis.ids.service.IPSearchInformationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class ApiController {
     private final APIKeyManagerService apiKeyManagerService;
+    private final IPSearchInformationService ipSearchInformationService;
 
-    public ApiController(APIKeyManagerService apiKeyManagerService) {
+    public ApiController(APIKeyManagerService apiKeyManagerService,IPSearchInformationService ipSearchInformationService) {
         this.apiKeyManagerService = apiKeyManagerService;
+        this.ipSearchInformationService = ipSearchInformationService;
     }
 
     @PostMapping("/keys/abuse")
@@ -50,5 +50,11 @@ public class ApiController {
         }
         apiKeyManagerService.setDefaultIBMXforcePassword(newPassword.trim());
         return  ResponseEntity.ok("IBM X-Force Password added successfully");
+    }
+
+    @PostMapping("/search/{ip}")
+    public ResponseEntity<String> searchTest(@PathVariable String ip){
+        ipSearchInformationService.analyzeIP(ip);
+        return ResponseEntity.ok("OK");
     }
 }

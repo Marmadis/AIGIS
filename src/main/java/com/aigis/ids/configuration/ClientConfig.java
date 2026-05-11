@@ -1,8 +1,6 @@
 package com.aigis.ids.configuration;
 
 import com.aigis.ids.service.APIKeyManagerService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
@@ -50,7 +48,6 @@ public class ClientConfig {
                         .requestInterceptor((request, body, execution) -> {
                             String auth = Base64.getEncoder()
                                     .encodeToString((apiKeyManagerService.getIBMXForceKey() + ":" + apiKeyManagerService.getDefaultIBMXforcePassword()).getBytes());
-
                             request.getHeaders().add("Authorization", "Basic " + auth);
                                 request.getHeaders().add("Accept", "application/json");
                                 return execution.execute(request,body);

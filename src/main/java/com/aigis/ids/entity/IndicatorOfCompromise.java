@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "indicator_of_compromise",createIndex = false)
+@Document(indexName = "indicator_of_compromise")
 public class IndicatorOfCompromise {
     @Id
     private String id = UUID.randomUUID().toString();
