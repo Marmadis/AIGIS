@@ -31,7 +31,7 @@ public class EnrichedAlert {
     @JsonProperty("network_context")
     private NetworkContext networkContext;
 
-    @Field(type = FieldType.Date, pattern = "yyyy-MM-dd HH:mm:ss")
+
     private String timestamp;
 
     @Data

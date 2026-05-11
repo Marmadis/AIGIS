@@ -43,8 +43,6 @@ public class RiskSystemService {
         VirusTotalInfo virusTotalInfoSource = virusTotalRepository.findByIpAddress(rawAlert.getSourceIp());
         VirusTotalInfo virusTotalInfoDestination = virusTotalRepository.findByIpAddress(rawAlert.getDestinationIp());
 
-        int virusTotalSourceScore = parseSafeInt(virusTotalInfoSource.getLast_analysis_stats());
-        int virusTotalDestinationScore =parseSafeInt(virusTotalInfoDestination.getLast_analysis_stats());
 
 
         double iocSource = 0.0;
