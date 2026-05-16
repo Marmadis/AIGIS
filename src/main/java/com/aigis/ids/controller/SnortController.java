@@ -2,6 +2,7 @@ package com.aigis.ids.controller;
 
 import com.aigis.ids.entity.RawAlert;
 import com.aigis.ids.repository.RawAlertRepository;
+import com.aigis.ids.service.IPSearchInformationService;
 import com.aigis.ids.service.MlService;
 import com.aigis.ids.service.RiskSystemService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,19 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
 
         private final RiskSystemService riskSystemService;
 
+        private final IPSearchInformationService ipSearchInformationService;
+
         private  final MlService mlService;
-        public SnortController(RawAlertRepository alertRepository, RiskSystemService riskSystemService, MlService mlService) {
+        public SnortController(RawAlertRepository alertRepository,
+                               RiskSystemService riskSystemService,
+                               MlService mlService,
+                               IPSearchInformationService ipSearchInformationService) {
             this.alertRepository = alertRepository;
             this.riskSystemService = riskSystemService;
             this.mlService = mlService;
+            this.ipSearchInformationService = ipSearchInformationService;
         }
 
         @PostMapping("/snort")
         public ResponseEntity<String> snortAlert(@RequestBody RawAlert alert) {
             alertRepository.save(alert);
             //riskSystemService.riskCalculate(alert);
-            System.out.println(alert);
+            ipSearchInformationService.isPublicIp(alert.getDestinationIp());
+            ipSearchInformationService.isPublicIp(alert.getSourceIp());
             mlService.sendTrafficData(alert);
+            log.info("Получен новый alert! "+alert);
             return ResponseEntity.ok("Received");
         }
 

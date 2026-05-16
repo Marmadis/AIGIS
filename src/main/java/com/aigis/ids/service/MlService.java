@@ -1,61 +1,54 @@
 package com.aigis.ids.service;
 
-import com.aigis.ids.configuration.ClientConfig;
-import com.aigis.ids.entity.AbuseInfo;
-import com.aigis.ids.entity.EnrichedAlert;
-import com.aigis.ids.entity.RawAlert;
-import com.aigis.ids.entity.VirusTotalInfo;
-import com.aigis.ids.repository.AbuseRepository;
+import com.aigis.ids.entity.*;
 import com.aigis.ids.repository.EnrichedAlertRepository;
-import com.aigis.ids.repository.VirusTotalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+@Slf4j
 @Service
 public class MlService {
-    private  final RestClient mlClient;
-    private  final EnrichedAlertRepository enrichedAlertRepository;
-    private  final AbuseRepository abuseRepository;
-    private  final VirusTotalRepository virusTotalRepository;
+    private final RestClient mlClient;
+    private final EnrichedAlertRepository enrichedAlertRepository;
+    private final IPSearchInformationService ipSearchService;
+
     public MlService(@Qualifier("mlClient") RestClient mlClient,
                      EnrichedAlertRepository enrichedAlertRepository,
-                     VirusTotalRepository virusTotalRepository,
-                     AbuseRepository abuseRepository){
+                     IPSearchInformationService ipSearchService) {
         this.mlClient = mlClient;
         this.enrichedAlertRepository = enrichedAlertRepository;
-        this.abuseRepository = abuseRepository;
-        this.virusTotalRepository = virusTotalRepository;
+        this.ipSearchService = ipSearchService;
     }
+
     public void sendTrafficData(RawAlert alert) {
-        if(abuseRepository.findByIpAddress(alert.getSourceIp()) == null){
-           System.out.println("[AbuseRepository] Нет данных по этому адресу");
-        }
+        try {
+            // 1. Получаем данные (из БД или по API)
+            AbuseInfo abuse = ipSearchService.getOrFetchAbuseInfo(alert.getSourceIp());
+            VirusTotalInfo vt = ipSearchService.getOrFetchVTInfo(alert.getSourceIp());
 
-        if(virusTotalRepository.findByIpAddress(alert.getSourceIp()) == null){
-            System.out.println("[VirusTotalRepository] Нет данных по этому адресу");
-        }
+            // 2. Проверяем на null, чтобы избежать NPE
+            if (abuse == null || vt == null) {
+                log.warn("Не удалось собрать полные данные для IP: {}", alert.getSourceIp());
+            }
 
-        AbuseInfo abuse= abuseRepository.findByIpAddress(alert.getSourceIp());
-        VirusTotalInfo vt = virusTotalRepository.findByIpAddress(alert.getSourceIp());
+            // 4. Отправляем в ML
+            EnrichedAlert enrichedAlert = mlClient.post()
+                    .uri("/predict")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(alert)
+                    .retrieve()
+                    .body(EnrichedAlert.class);
 
+            if (enrichedAlert != null) {
+                log.info("Успешный вердикт ML: {}", enrichedAlert.getVerdict());
+                enrichedAlertRepository.save(enrichedAlert);
+            }
 
-        EnrichedAlert enrichedAlert = mlClient.post()
-                .uri("/predict")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(alert)
-                .body(abuse.getAbuseConfidenceScore())
-                .body(abuse.isTor())
-                .body(abuse.getTotalReports())
-                .body(vt.getLastAnalysisStats().getMalicious())
-                .retrieve()
-                .body(EnrichedAlert.class);
-
-        if (enrichedAlert != null) {
-            System.out.println("Получен алерт: " + enrichedAlert.getVerdict());
-            System.out.println(enrichedAlert);
-            enrichedAlertRepository.save(enrichedAlert);
+        } catch (Exception e) {
+            log.error("Ошибка в процессе обогащения данных или ML: {}", e.getMessage());
         }
     }
 }

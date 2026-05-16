@@ -35,11 +35,19 @@ public class AbuseInfo {
     private String isp;
     private String domain;
     private List<String> hostnames;
+
+    public void setTor(boolean tor) {
+        isTor = tor;
+    }
+
+    public boolean isTor() {
+        return isTor;
+    }
+
     private boolean isTor;
     private int totalReports;
     private int numDistinctUsers;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_time_no_millis)
     private String lastReportedAt;
 
     private List<IpReport> reports;

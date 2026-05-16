@@ -6,10 +6,12 @@ import com.aigis.ids.entity.VirusTotalInfo;
 import com.aigis.ids.repository.AbuseRepository;
 import com.aigis.ids.repository.IocRepository;
 import com.aigis.ids.repository.VirusTotalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.data.elasticsearch.annotations.DateFormat.time;
 
+@Slf4j
 @Service
 public class RiskSystemService {
 
@@ -28,34 +30,6 @@ public class RiskSystemService {
         this.iocRepository = iocRepository;
     }
 
-    public void riskCalculate(RawAlert rawAlert){
-        ipSearchInformationService.analyzeIP(rawAlert.getDestinationIp());
-         waitThreeMinutes();
-         ipSearchInformationService.analyzeIP(rawAlert.getSourceIp());
-         waitThreeMinutes();
-
-         AbuseInfo abuseInfoSource = abuseRepository.findByIpAddress(rawAlert.getSourceIp());
-         AbuseInfo abuseInfoDestination = abuseRepository.findByIpAddress(rawAlert.getDestinationIp());
-
-
-         int abuseSourceScore = abuseInfoSource.getTotalReports();
-        int abuseDestinationScore = abuseInfoDestination.getTotalReports();
-        VirusTotalInfo virusTotalInfoSource = virusTotalRepository.findByIpAddress(rawAlert.getSourceIp());
-        VirusTotalInfo virusTotalInfoDestination = virusTotalRepository.findByIpAddress(rawAlert.getDestinationIp());
-
-
-
-        double iocSource = 0.0;
-        double iocDestination = 0.0;
-        if(iocRepository.existsByIpAddress(rawAlert.getSourceIp())){
-            iocSource = 0.4;
-        }
-
-        if(iocRepository.existsByIpAddress(rawAlert.getDestinationIp())){
-            iocSource = 0.4;
-        }
-
-    }
 
     public int parseSafeInt(String value){
         if(value.trim().isBlank() || value == null){
@@ -64,16 +38,9 @@ public class RiskSystemService {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            System.out.println("Something went wrong"+e.getMessage());
+            log.error("Risk System Service :"+e.getMessage());
             return 0;
         }
 
-    }
-    public void waitThreeMinutes(){
-        try {
-            time.wait(180000);
-        } catch (InterruptedException e){
-            System.out.println("Something went wrong in waiting"+e.getMessage());
-        }
     }
 }
