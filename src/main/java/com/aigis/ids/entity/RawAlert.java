@@ -29,7 +29,7 @@ public class RawAlert {
     private String sourceIp;
 
     @JsonProperty("src_port")
-    private String sourceProtocol;
+    private String sourcePort;
 
     @JsonProperty("dst_addr")
     private String destinationIp;

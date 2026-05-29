@@ -50,6 +50,7 @@ public class AbuseInfo {
 
     private String lastReportedAt;
 
+    @Field(type = FieldType.Object)
     private List<IpReport> reports;
 
     @Data

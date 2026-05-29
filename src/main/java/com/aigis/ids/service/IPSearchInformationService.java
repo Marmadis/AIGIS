@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @Service
+
 public class IPSearchInformationService {
     private final RestClient abuseClient;
     private final RestClient virusClient;

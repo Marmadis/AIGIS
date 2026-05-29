@@ -5,6 +5,7 @@ import com.aigis.ids.repository.RawAlertRepository;
 import com.aigis.ids.service.IPSearchInformationService;
 import com.aigis.ids.service.MlService;
 import com.aigis.ids.service.RiskSystemService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
     @Slf4j
     @RestController
     @RequestMapping("/webhook")
+    @RequiredArgsConstructor
     public class SnortController {
 
         private final RawAlertRepository alertRepository;
@@ -24,15 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
         private final IPSearchInformationService ipSearchInformationService;
 
         private  final MlService mlService;
-        public SnortController(RawAlertRepository alertRepository,
-                               RiskSystemService riskSystemService,
-                               MlService mlService,
-                               IPSearchInformationService ipSearchInformationService) {
-            this.alertRepository = alertRepository;
-            this.riskSystemService = riskSystemService;
-            this.mlService = mlService;
-            this.ipSearchInformationService = ipSearchInformationService;
-        }
 
         @PostMapping("/snort")
         public ResponseEntity<String> snortAlert(@RequestBody RawAlert alert) {

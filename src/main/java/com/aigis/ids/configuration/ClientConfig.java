@@ -2,6 +2,7 @@ package com.aigis.ids.configuration;
 
 
 import com.aigis.ids.service.APIKeyManagerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -9,13 +10,12 @@ import org.springframework.web.client.RestClient;
 
 @EnableAsync
 @Configuration
+@RequiredArgsConstructor
 public class ClientConfig {
 
         private  final APIKeyManagerService apiKeyManagerService;
 
-        public ClientConfig(APIKeyManagerService  apiKeyManagerService) {
-                this.apiKeyManagerService = apiKeyManagerService;
-        }
+
 
            @Bean
         public RestClient abuseIpDbClient() {
