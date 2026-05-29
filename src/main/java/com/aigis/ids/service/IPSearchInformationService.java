@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 
 @Slf4j
@@ -99,6 +100,60 @@ public class IPSearchInformationService {
         }else{
             log.warn("Адрес является приватным .Данные в Elasticsearch будут заполнены соотвуетющие .Проверки через сервисы AbuseIPDB & VirusTotal пропускаются");
 
+            AbuseInfo privateAbuseInfo = createPrivateAbuseInfo(ip);
+            VirusTotalInfo privateVTInfo = createPrivateVTInfo(ip);
+
+            abuseRepo.save(privateAbuseInfo);
+            virusRepo.save(privateVTInfo);
+
+            log.info("Данные для приватного IP {} успешно сохранены в Elasticsearch", ip);
         }
+    }
+
+    private AbuseInfo createPrivateAbuseInfo(String ip) {
+        AbuseInfo info = new AbuseInfo();
+
+        info.setIpAddress(ip);
+        info.setPublic(false);
+        info.setIpVersion(ip.contains(":") ? 6 : 4);
+        info.setWhitelisted(true);
+        info.setAbuseConfidenceScore(0);
+        info.setCountryCode("LOCAL");
+        info.setCountryName("Private Network");
+        info.setUsageType("Local Infrastructure");
+        info.setIsp("Internal Network");
+        info.setDomain("local");
+        info.setHostnames(List.of("localhost"));
+        info.setTor(false);
+        info.setTotalReports(0);
+        info.setNumDistinctUsers(0);
+        info.setReports(List.of());
+
+        return info;
+    }
+
+    private VirusTotalInfo createPrivateVTInfo(String ip) {
+        VirusTotalInfo info = new VirusTotalInfo();
+        info.setIpAddress(ip);
+        info.setReputation(0);
+        info.setAsOwner("Private Network Owner");
+        info.setNetwork(ip + (ip.contains(":") ? "/128" : "/32")); // Имитируем подсеть
+        info.setCountry("LOCAL");
+        info.setLastAnalysisDate(System.currentTimeMillis() / 1000L);
+
+        VirusTotalInfo.AnalysisStats stats = new VirusTotalInfo.AnalysisStats();
+        stats.setMalicious(0);
+        stats.setSuspicious(0);
+        stats.setHarmless(0);
+        stats.setUndetected(0);
+        stats.setTimeout(0);
+        info.setLastAnalysisStats(stats);
+
+        VirusTotalInfo.TotalVotes votes = new VirusTotalInfo.TotalVotes();
+        votes.setHarmless(0);
+        votes.setMalicious(0);
+        info.setTotalVotes(votes);
+
+        return info;
     }
 }

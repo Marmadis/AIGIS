@@ -47,6 +47,7 @@ public class MlService {
                     abuseSource,abuseDestination,vtSource,vtDestination);
 
 
+            log.info("[TEST] Данные которые были скомпилированы NetworkFeatures:"+networkFeaturesDTO);
             // 4. Отправляем в ML
             EnrichedAlert enrichedAlert = mlClient.post()
                     .uri("/predict")
