@@ -90,23 +90,26 @@ public class IPSearchInformationService {
         }
     }
 
-    public void analyzeIP(String ip){
+    public void analyzeIP(String ip) {
+        if(virusRepo.existsByIpAddress(ip)&&abuseRepo.existsByIpAddress(ip)){
+          log.info("Данные по  адресу {} уже есть в ElasticSearch.Дальнейший анализ будет пропущен",ip);
+        }else {
+            if (isPublicIp(ip)) {
+                log.info("Адрес является публичным:" + ip);
+                log.info("Идет проверка адреса через сервисы AbuseIPDB & VirusTotal");
+                getOrFetchVTInfo(ip);
+                getOrFetchAbuseInfo(ip);
+            } else {
+                log.warn("Адрес {} является приватным .Данные в Elasticsearch будут заполнены соотвуетющие .Проверки через сервисы AbuseIPDB & VirusTotal пропускаются",ip);
 
-        if (isPublicIp(ip)){
-            log.info("Адрес является публичным:"+ip);
-            log.info("Идет проверка адреса через сервисы AbuseIPDB & VirusTotal");
-            getOrFetchVTInfo(ip);
-            getOrFetchAbuseInfo(ip);
-        }else{
-            log.warn("Адрес является приватным .Данные в Elasticsearch будут заполнены соотвуетющие .Проверки через сервисы AbuseIPDB & VirusTotal пропускаются");
+                AbuseInfo privateAbuseInfo = createPrivateAbuseInfo(ip);
+                VirusTotalInfo privateVTInfo = createPrivateVTInfo(ip);
 
-            AbuseInfo privateAbuseInfo = createPrivateAbuseInfo(ip);
-            VirusTotalInfo privateVTInfo = createPrivateVTInfo(ip);
+                abuseRepo.save(privateAbuseInfo);
+                virusRepo.save(privateVTInfo);
 
-            abuseRepo.save(privateAbuseInfo);
-            virusRepo.save(privateVTInfo);
-
-            log.info("Данные для приватного IP {} успешно сохранены в Elasticsearch", ip);
+                log.info("Данные для приватного IP {} успешно сохранены в Elasticsearch", ip);
+            }
         }
     }
 

@@ -31,9 +31,8 @@ public class CollectDataService {
         String destiantionPort = rawAlert.getDestinationPort();
 
         log.info("Поиск сетевого лога связанного с алертом ID"+rawAlert.getId());
-         ConnLogZeek connLogZeek = connLogZeekRepository.findFirstBySourceIpAndSourcePortAndDestinationIpAndDestinationPortOrDestinationIpAndDestinationPortAndSourceIpAndSourcePort(
-                 sourceIp, sourcePort, destinationIp, destiantionPort,
-                 destinationIp, destiantionPort, sourceIp, sourcePort
+         ConnLogZeek connLogZeek = connLogZeekRepository.findConnection(
+                 sourceIp, sourcePort, destinationIp, destiantionPort
          ).orElseThrow(() -> new RuntimeException("Сетевой лог Zeek не найден для соединения"));
 
          log.info("Поиск признаков flowmeter по uid "+connLogZeek.getUid());

@@ -8,10 +8,11 @@ import com.aigis.ids.repository.IocRepository;
 import com.aigis.ids.repository.VirusTotalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import static java.lang.Thread.sleep;
 
 @Slf4j
 @Service
@@ -31,6 +32,9 @@ public class MlService {
     public void sendTrafficData(RawAlert alert) {
         try {
             // 1. Получаем данные (из БД или по API)
+            ipSearchService.analyzeIP(alert.getSourceIp());
+            ipSearchService.analyzeIP(alert.getDestinationIp());
+            sleep(15000);
             AbuseInfo abuseSource = abuseRepository.findByIpAddress(alert.getSourceIp()).
                     orElseThrow(() -> new Exception("Информация об AbuseInfo не найдена для IP: " +alert.getSourceIp()));
             VirusTotalInfo vtSource = virusTotalRepository.findByIpAddress(alert.getSourceIp())
@@ -42,7 +46,7 @@ public class MlService {
                     .orElseThrow(() -> new Exception("Информация об VirusTotalInfo не найдена для IP: " +alert.getDestinationIp()));
 
 
-            log.info("Компилация данных для отправки  ML  всех признаков");
+            log.info("Компилация данных для отправки  ML  всех признаков {}", alert.getId());
             NetworkFeaturesDTO networkFeaturesDTO = collectDataService.findByAlert(alert,
                     abuseSource,abuseDestination,vtSource,vtDestination);
 
@@ -77,7 +81,7 @@ public class MlService {
             }
 
         } catch (Exception e) {
-            log.error("Ошибка в процессе обогащения данных или ML: {}", e.getMessage());
+            log.error("Ошибка в процессе обогащения данных или ML: {} | Alert ID {}", e.getMessage(),alert.getId());
         }
     }
 }

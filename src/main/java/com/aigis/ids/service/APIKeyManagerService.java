@@ -2,6 +2,7 @@ package com.aigis.ids.service;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class APIKeyManagerService {
     private final Map<String, String> keys = new ConcurrentHashMap<>();
@@ -27,9 +29,13 @@ public class APIKeyManagerService {
     }
 
     public String getAbuseKey() { return keys.get("ABUSE"); }
-    public void setAbuseKey(String newKey) { keys.put("ABUSE", newKey); }
+    public void setAbuseKey(String newKey) {
+        log.info("Установлен ключ API для сервиса AbuseIPDB");
+        keys.put("ABUSE", newKey); }
 
     public String getVirusTotalKey() { return keys.get("VIRUSTOTAL"); }
-    public void setVirusTotalKey(String newKey) { keys.put("VIRUSTOTAL", newKey); }
+    public void setVirusTotalKey(String newKey) {
+        log.info("Установлен ключ API для сервиса VirusTotal");
+        keys.put("VIRUSTOTAL", newKey); }
 
 }
