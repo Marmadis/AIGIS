@@ -8,16 +8,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "zeek-flowmeter",createIndex = false)
+@NoArgsConstructor
+@Document(indexName = "zeek-flowmeter", createIndex = false)
 public class FlowMeterLogZeek {
 
     @Id
     private String id;
-
-    @JsonProperty("@timestamp")
-    private String timestamp;
 
     private String uid;
 
@@ -84,6 +81,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("bwd_URG_flag_count")
     private Integer bwdUrgFlags;
 
+    // fwd payload
     @JsonProperty("fwd_pkts_payload.min")
     private Double fwdPacketLengthMin;
 
@@ -99,6 +97,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("fwd_pkts_payload.tot")
     private Double totalLengthFwdPackets;
 
+    // bwd payload
     @JsonProperty("bwd_pkts_payload.min")
     private Double bwdPacketLengthMin;
 
@@ -114,6 +113,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("bwd_pkts_payload.tot")
     private Double totalLengthBwdPackets;
 
+    // flow payload
     @JsonProperty("flow_pkts_payload.min")
     private Double flowPacketLengthMin;
 
@@ -129,6 +129,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("flow_pkts_payload.tot")
     private Double flowPacketLengthTotal;
 
+    // flow IAT
     @JsonProperty("flow_iat.min")
     private Double flowIatMin;
 
@@ -144,6 +145,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("flow_iat.tot")
     private Double flowIatTotal;
 
+    // fwd IAT
     @JsonProperty("fwd_iat.min")
     private Double fwdIatMin;
 
@@ -159,6 +161,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("fwd_iat.tot")
     private Double fwdIatTotal;
 
+    // bwd IAT
     @JsonProperty("bwd_iat.min")
     private Double bwdIatMin;
 
@@ -207,6 +210,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("bwd_bulk_rate")
     private Double bwdBulkRate;
 
+    // active
     @JsonProperty("active.min")
     private Double activeMin;
 
@@ -222,6 +226,7 @@ public class FlowMeterLogZeek {
     @JsonProperty("active.tot")
     private Double activeTotal;
 
+    // idle
     @JsonProperty("idle.min")
     private Double idleMin;
 

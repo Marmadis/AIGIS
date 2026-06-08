@@ -38,4 +38,31 @@ public interface ConnLogZeekRepository extends ElasticsearchRepository<ConnLogZe
     }
     """)
     Optional<ConnLogZeek> findConnection(String srcIp, String srcPort, String dstIp, String dstPort);
+
+    @Query("""
+{
+  "bool": {
+    "should": [
+      {
+        "bool": {
+          "must": [
+            { "term": { "id.orig_h": "?0" } },
+            { "term": { "id.resp_h": "?1" } }
+          ]
+        }
+      },
+      {
+        "bool": {
+          "must": [
+            { "term": { "id.resp_h": "?0" } },
+            { "term": { "id.orig_h": "?1" } }
+          ]
+        }
+      }
+    ],
+    "minimum_should_match": 1
+  }
+}
+""")
+    Optional<ConnLogZeek> findConnectionByIp(String srcIp, String dstIp);
 }

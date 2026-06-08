@@ -30,15 +30,21 @@ public class CollectDataService {
         String destinationIp = rawAlert.getDestinationIp();
         String destiantionPort = rawAlert.getDestinationPort();
 
+         ConnLogZeek connLogZeek;
         log.info("Поиск сетевого лога связанного с алертом ID"+rawAlert.getId());
-         ConnLogZeek connLogZeek = connLogZeekRepository.findConnection(
-                 sourceIp, sourcePort, destinationIp, destiantionPort
-         ).orElseThrow(() -> new RuntimeException("Сетевой лог Zeek не найден для соединения"));
+         if (sourcePort == null && destiantionPort == null) {
+             // ICMP — ищем только по IP без портов
+            connLogZeek = connLogZeekRepository.findConnectionByIp(sourceIp, destinationIp)
+                     .orElseThrow(() -> new RuntimeException("Zeek лог не найден для ICMP соединения"));
+         } else {
+             connLogZeek = connLogZeekRepository.findConnection(sourceIp, sourcePort, destinationIp, destiantionPort)
+                     .orElseThrow(() -> new RuntimeException("Zeek лог не найден для соединения"));
+         }
 
          log.info("Поиск признаков flowmeter по uid "+connLogZeek.getUid());
          FlowMeterLogZeek flowMeterLogZeek = flowMeterLogZeekRepository.findByUid(connLogZeek.getUid())
                  .orElseThrow(() -> new RuntimeException("FlowMeter лог Zeek не найден для соединения"));
-
+         log.info("Данные из Flowmeter по uid {}:{}",connLogZeek.getUid(),flowMeterLogZeek);
          log.info("Маппинг данных в NetworkFeatures");
          return networkFeaturesMapper.toNetworkFeaturesDTO(flowMeterLogZeek,
                  rawAlert.getSourceIp(),

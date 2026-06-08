@@ -40,9 +40,9 @@ public class MlService {
             VirusTotalInfo vtSource = virusTotalRepository.findByIpAddress(alert.getSourceIp())
                     .orElseThrow(() -> new Exception("Информация об VirusTotalInfo не найдена для IP: " +alert.getSourceIp()));
 
-            AbuseInfo abuseDestination = abuseRepository.findByIpAddress(alert.getSourceIp()).
+            AbuseInfo abuseDestination = abuseRepository.findByIpAddress(alert.getDestinationIp()).
                     orElseThrow(() -> new Exception("Информация об AbuseInfo не найдена для IP: " +alert.getDestinationIp()));
-            VirusTotalInfo vtDestination = virusTotalRepository.findByIpAddress(alert.getSourceIp())
+            VirusTotalInfo vtDestination = virusTotalRepository.findByIpAddress(alert.getDestinationIp())
                     .orElseThrow(() -> new Exception("Информация об VirusTotalInfo не найдена для IP: " +alert.getDestinationIp()));
 
 
