@@ -33,7 +33,7 @@ public class CollectDataService {
          ConnLogZeek connLogZeek;
         log.info("Поиск сетевого лога связанного с алертом ID"+rawAlert.getId());
          if (sourcePort == null && destinationPort == null) {
-             // ICMP — ищем только по IP без портов
+
             connLogZeek = connLogZeekRepository.findConnectionByIp(sourceIp, destinationIp)
                      .orElseThrow(() -> new RuntimeException("Zeek лог не найден для ICMP соединения"));
          } else {

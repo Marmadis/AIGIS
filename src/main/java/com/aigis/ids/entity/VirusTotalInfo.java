@@ -59,10 +59,6 @@ public class VirusTotalInfo {
         private int malicious;
     }
 
-    /**
-     * Обертки для корректного парсинга иерархии JSON VirusTotal:
-     * Root -> data -> attributes
-     */
     @Data
     public static class VTContainer {
         private VTData data;
@@ -70,7 +66,7 @@ public class VirusTotalInfo {
 
     @Data
     public static class VTData {
-        private String id; // Это IP адрес в формате VT
+        private String id;
         private VTAttributes attributes;
     }
 

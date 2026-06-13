@@ -33,7 +33,6 @@ public interface NetworkFeaturesMapper {
     @Mapping(target = "totalReports",   source = "abuse.totalReports")
     @Mapping(target = "isTor",          source = "abuse.tor")
 
-    // --- Пакеты (Long → Double, имена не совпадают) ---
     @Mapping(target = "totalFwdPackets",      source = "zeek.totalFwdPackets")
     @Mapping(target = "totalBackwardPackets", source = "zeek.totalBwdPackets")
 

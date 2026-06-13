@@ -46,7 +46,7 @@ public class ClientConfig {
     @Bean
     public RestClient mlClient() {
         return RestClient.builder()
-                .baseUrl("http://ml-ai-service:5000") // Лучше оставить только хост
+                .baseUrl("http://ml-ai-service:5000")
                 .build();
     }
 

@@ -64,10 +64,7 @@ public class AbuseInfo {
         private String fromIpCountryName;
     }
 
-    /**
-     * Статический метод-обертка для десериализации,
-     * так как API AbuseIPDB всегда возвращает объект в поле "data"
-     */
+
     @Data
     public static class AbuseContainer {
         private AbuseInfo data;

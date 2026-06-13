@@ -270,7 +270,7 @@ public class NetworkFeaturesDTO {
         private Double idleMin; // 78
 
         // ==========================================
-        // БЛОК THREAT INTEL (Из AbuseInfo и VirusTotalInfo)
+        //  THREAT INTEL (Из AbuseInfo и VirusTotalInfo)
         // ==========================================
 
         @JsonProperty("abuseScore")

@@ -27,6 +27,10 @@ public class EnrichedAlert {
 
     private String ioc;
 
+    @JsonProperty("request_id")
+    @Field(type = FieldType.Keyword)
+    private String requestId;
+
     @JsonProperty("threat_type")
     @Field(type = FieldType.Keyword)
     private String threatType;
@@ -41,12 +45,11 @@ public class EnrichedAlert {
 
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime timestamp; // Исправлено
+    private LocalDateTime timestamp;
 
     @Field(type = FieldType.Object)
     private Details details;
 
-    // Если это поле нужно для внутренней логики, оставляем
     private boolean isAttack;
 
     @Data
@@ -63,8 +66,17 @@ public class EnrichedAlert {
     @Data
     @NoArgsConstructor
     public static class NetworkNode {
+
         private String ip;
+
         private String verdict;
+
         private double confidence;
+
+        @JsonProperty("isTor")
+        private boolean isTor;
+
+        @JsonProperty("isIOC")
+        private boolean isIOC;
     }
 }

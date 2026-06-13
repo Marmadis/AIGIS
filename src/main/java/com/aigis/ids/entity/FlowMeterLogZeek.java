@@ -1,11 +1,12 @@
 package com.aigis.ids.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 @AllArgsConstructor
@@ -18,239 +19,243 @@ public class FlowMeterLogZeek {
 
     private String uid;
 
-    @JsonProperty("flow_duration")
+    @Field(name = "flow_duration", type = FieldType.Double)
     private Double flowDuration;
 
-    @JsonProperty("fwd_pkts_tot")
+    @Field(name = "fwd_pkts_tot", type = FieldType.Long)
     private Long totalFwdPackets;
 
-    @JsonProperty("bwd_pkts_tot")
+    @Field(name = "bwd_pkts_tot", type = FieldType.Long)
     private Long totalBwdPackets;
 
-    @JsonProperty("fwd_data_pkts_tot")
+    @Field(name = "fwd_data_pkts_tot", type = FieldType.Long)
     private Long fwdDataPacketsTotal;
 
-    @JsonProperty("bwd_data_pkts_tot")
+    @Field(name = "bwd_data_pkts_tot", type = FieldType.Long)
     private Long bwdDataPacketsTotal;
 
-    @JsonProperty("fwd_pkts_per_sec")
+    @Field(name = "fwd_pkts_per_sec", type = FieldType.Double)
     private Double fwdPacketsPerSec;
 
-    @JsonProperty("bwd_pkts_per_sec")
+    @Field(name = "bwd_pkts_per_sec", type = FieldType.Double)
     private Double bwdPacketsPerSec;
 
-    @JsonProperty("flow_pkts_per_sec")
+    @Field(name = "flow_pkts_per_sec", type = FieldType.Double)
     private Double flowPacketsPerSec;
 
-    @JsonProperty("down_up_ratio")
-    private Double downUpRatio;
-
-    @JsonProperty("fwd_header_size_tot")
-    private Long fwdHeaderSizeTotal;
-
-    @JsonProperty("bwd_header_size_tot")
-    private Long bwdHeaderSizeTotal;
-
-    @JsonProperty("flow_FIN_flag_count")
-    private Integer finFlagCount;
-
-    @JsonProperty("flow_SYN_flag_count")
-    private Integer synFlagCount;
-
-    @JsonProperty("flow_RST_flag_count")
-    private Integer rstFlagCount;
-
-    @JsonProperty("flow_ACK_flag_count")
-    private Integer ackFlagCount;
-
-    @JsonProperty("flow_CWR_flag_count")
-    private Integer cwrFlagCount;
-
-    @JsonProperty("flow_ECE_flag_count")
-    private Integer eceFlagCount;
-
-    @JsonProperty("fwd_PSH_flag_count")
-    private Integer fwdPshFlags;
-
-    @JsonProperty("bwd_PSH_flag_count")
-    private Integer bwdPshFlags;
-
-    @JsonProperty("fwd_URG_flag_count")
-    private Integer fwdUrgFlags;
-
-    @JsonProperty("bwd_URG_flag_count")
-    private Integer bwdUrgFlags;
-
-    // fwd payload
-    @JsonProperty("fwd_pkts_payload.min")
-    private Double fwdPacketLengthMin;
-
-    @JsonProperty("fwd_pkts_payload.max")
-    private Double fwdPacketLengthMax;
-
-    @JsonProperty("fwd_pkts_payload.avg")
-    private Double fwdPacketLengthMean;
-
-    @JsonProperty("fwd_pkts_payload.std")
-    private Double fwdPacketLengthStd;
-
-    @JsonProperty("fwd_pkts_payload.tot")
-    private Double totalLengthFwdPackets;
-
-    // bwd payload
-    @JsonProperty("bwd_pkts_payload.min")
-    private Double bwdPacketLengthMin;
-
-    @JsonProperty("bwd_pkts_payload.max")
-    private Double bwdPacketLengthMax;
-
-    @JsonProperty("bwd_pkts_payload.avg")
-    private Double bwdPacketLengthMean;
-
-    @JsonProperty("bwd_pkts_payload.std")
-    private Double bwdPacketLengthStd;
-
-    @JsonProperty("bwd_pkts_payload.tot")
-    private Double totalLengthBwdPackets;
-
-    // flow payload
-    @JsonProperty("flow_pkts_payload.min")
-    private Double flowPacketLengthMin;
-
-    @JsonProperty("flow_pkts_payload.max")
-    private Double flowPacketLengthMax;
-
-    @JsonProperty("flow_pkts_payload.avg")
-    private Double flowPacketLengthMean;
-
-    @JsonProperty("flow_pkts_payload.std")
-    private Double flowPacketLengthStd;
-
-    @JsonProperty("flow_pkts_payload.tot")
-    private Double flowPacketLengthTotal;
-
-    // flow IAT
-    @JsonProperty("flow_iat.min")
-    private Double flowIatMin;
-
-    @JsonProperty("flow_iat.max")
-    private Double flowIatMax;
-
-    @JsonProperty("flow_iat.avg")
-    private Double flowIatMean;
-
-    @JsonProperty("flow_iat.std")
-    private Double flowIatStd;
-
-    @JsonProperty("flow_iat.tot")
-    private Double flowIatTotal;
-
-    // fwd IAT
-    @JsonProperty("fwd_iat.min")
-    private Double fwdIatMin;
-
-    @JsonProperty("fwd_iat.max")
-    private Double fwdIatMax;
-
-    @JsonProperty("fwd_iat.avg")
-    private Double fwdIatMean;
-
-    @JsonProperty("fwd_iat.std")
-    private Double fwdIatStd;
-
-    @JsonProperty("fwd_iat.tot")
-    private Double fwdIatTotal;
-
-    // bwd IAT
-    @JsonProperty("bwd_iat.min")
-    private Double bwdIatMin;
-
-    @JsonProperty("bwd_iat.max")
-    private Double bwdIatMax;
-
-    @JsonProperty("bwd_iat.avg")
-    private Double bwdIatMean;
-
-    @JsonProperty("bwd_iat.std")
-    private Double bwdIatStd;
-
-    @JsonProperty("bwd_iat.tot")
-    private Double bwdIatTotal;
-
-    @JsonProperty("payload_bytes_per_second")
+    @Field(name = "payload_bytes_per_second", type = FieldType.Double)
     private Double flowBytesPerSecond;
 
-    @JsonProperty("fwd_subflow_pkts")
-    private Double subflowFwdPackets;
+    @Field(name = "down_up_ratio", type = FieldType.Double)
+    private Double downUpRatio;
 
-    @JsonProperty("bwd_subflow_pkts")
-    private Double subflowBwdPackets;
+    @Field(name = "fwd_header_size_tot", type = FieldType.Long)
+    private Long fwdHeaderSizeTotal;
 
-    @JsonProperty("fwd_subflow_bytes")
-    private Double subflowFwdBytes;
+    @Field(name = "bwd_header_size_tot", type = FieldType.Long)
+    private Long bwdHeaderSizeTotal;
 
-    @JsonProperty("bwd_subflow_bytes")
-    private Double subflowBwdBytes;
+    // Flag counts
+    @Field(name = "flow_FIN_flag_count", type = FieldType.Integer)
+    private Integer finFlagCount;
 
-    @JsonProperty("fwd_bulk_bytes")
-    private Double fwdBulkBytes;
+    @Field(name = "flow_SYN_flag_count", type = FieldType.Integer)
+    private Integer synFlagCount;
 
-    @JsonProperty("bwd_bulk_bytes")
-    private Double bwdBulkBytes;
+    @Field(name = "flow_RST_flag_count", type = FieldType.Integer)
+    private Integer rstFlagCount;
 
-    @JsonProperty("fwd_bulk_packets")
-    private Double fwdBulkPackets;
+    @Field(name = "flow_ACK_flag_count", type = FieldType.Integer)
+    private Integer ackFlagCount;
 
-    @JsonProperty("bwd_bulk_packets")
-    private Double bwdBulkPackets;
+    @Field(name = "flow_CWR_flag_count", type = FieldType.Integer)
+    private Integer cwrFlagCount;
 
-    @JsonProperty("fwd_bulk_rate")
-    private Double fwdBulkRate;
+    @Field(name = "flow_ECE_flag_count", type = FieldType.Integer)
+    private Integer eceFlagCount;
 
-    @JsonProperty("bwd_bulk_rate")
-    private Double bwdBulkRate;
+    @Field(name = "fwd_PSH_flag_count", type = FieldType.Integer)
+    private Integer fwdPshFlags;
 
-    // active
-    @JsonProperty("active.min")
+    @Field(name = "bwd_PSH_flag_count", type = FieldType.Integer)
+    private Integer bwdPshFlags;
+
+    @Field(name = "fwd_URG_flag_count", type = FieldType.Integer)
+    private Integer fwdUrgFlags;
+
+    @Field(name = "bwd_URG_flag_count", type = FieldType.Integer)
+    private Integer bwdUrgFlags;
+
+    // fwd payload — ТОЧКИ
+    @Field(name = "fwd_pkts_payload.min", type = FieldType.Double)
+    private Double fwdPacketLengthMin;
+
+    @Field(name = "fwd_pkts_payload.max", type = FieldType.Double)
+    private Double fwdPacketLengthMax;
+
+    @Field(name = "fwd_pkts_payload.avg", type = FieldType.Double)
+    private Double fwdPacketLengthMean;
+
+    @Field(name = "fwd_pkts_payload.std", type = FieldType.Double)
+    private Double fwdPacketLengthStd;
+
+    @Field(name = "fwd_pkts_payload.tot", type = FieldType.Double)
+    private Double totalLengthFwdPackets;
+
+    // bwd payload — ТОЧКИ
+    @Field(name = "bwd_pkts_payload.min", type = FieldType.Double)
+    private Double bwdPacketLengthMin;
+
+    @Field(name = "bwd_pkts_payload.max", type = FieldType.Double)
+    private Double bwdPacketLengthMax;
+
+    @Field(name = "bwd_pkts_payload.avg", type = FieldType.Double)
+    private Double bwdPacketLengthMean;
+
+    @Field(name = "bwd_pkts_payload.std", type = FieldType.Double)
+    private Double bwdPacketLengthStd;
+
+    @Field(name = "bwd_pkts_payload.tot", type = FieldType.Double)
+    private Double totalLengthBwdPackets;
+
+    // flow payload — ТОЧКИ
+    @Field(name = "flow_pkts_payload.min", type = FieldType.Double)
+    private Double flowPacketLengthMin;
+
+    @Field(name = "flow_pkts_payload.max", type = FieldType.Double)
+    private Double flowPacketLengthMax;
+
+    @Field(name = "flow_pkts_payload.avg", type = FieldType.Double)
+    private Double flowPacketLengthMean;
+
+    @Field(name = "flow_pkts_payload.std", type = FieldType.Double)
+    private Double flowPacketLengthStd;
+
+    @Field(name = "flow_pkts_payload.tot", type = FieldType.Double)
+    private Double flowPacketLengthTotal;
+
+    // flow IAT — ТОЧКИ
+    @Field(name = "flow_iat.min", type = FieldType.Double)
+    private Double flowIatMin;
+
+    @Field(name = "flow_iat.max", type = FieldType.Double)
+    private Double flowIatMax;
+
+    @Field(name = "flow_iat.avg", type = FieldType.Double)
+    private Double flowIatMean;
+
+    @Field(name = "flow_iat.std", type = FieldType.Double)
+    private Double flowIatStd;
+
+    @Field(name = "flow_iat.tot", type = FieldType.Double)
+    private Double flowIatTotal;
+
+    // fwd IAT — ТОЧКИ
+    @Field(name = "fwd_iat.min", type = FieldType.Double)
+    private Double fwdIatMin;
+
+    @Field(name = "fwd_iat.max", type = FieldType.Double)
+    private Double fwdIatMax;
+
+    @Field(name = "fwd_iat.avg", type = FieldType.Double)
+    private Double fwdIatMean;
+
+    @Field(name = "fwd_iat.std", type = FieldType.Double)
+    private Double fwdIatStd;
+
+    @Field(name = "fwd_iat.tot", type = FieldType.Double)
+    private Double fwdIatTotal;
+
+    // bwd IAT — ТОЧКИ
+    @Field(name = "bwd_iat.min", type = FieldType.Double)
+    private Double bwdIatMin;
+
+    @Field(name = "bwd_iat.max", type = FieldType.Double)
+    private Double bwdIatMax;
+
+    @Field(name = "bwd_iat.avg", type = FieldType.Double)
+    private Double bwdIatMean;
+
+    @Field(name = "bwd_iat.std", type = FieldType.Double)
+    private Double bwdIatStd;
+
+    @Field(name = "bwd_iat.tot", type = FieldType.Double)
+    private Double bwdIatTotal;
+
+    // active — ТОЧКИ
+    @Field(name = "active.min", type = FieldType.Double)
     private Double activeMin;
 
-    @JsonProperty("active.max")
+    @Field(name = "active.max", type = FieldType.Double)
     private Double activeMax;
 
-    @JsonProperty("active.avg")
+    @Field(name = "active.avg", type = FieldType.Double)
     private Double activeMean;
 
-    @JsonProperty("active.std")
+    @Field(name = "active.std", type = FieldType.Double)
     private Double activeStd;
 
-    @JsonProperty("active.tot")
+    @Field(name = "active.tot", type = FieldType.Double)
     private Double activeTotal;
 
-    // idle
-    @JsonProperty("idle.min")
+    // idle — ТОЧКИ
+    @Field(name = "idle.min", type = FieldType.Double)
     private Double idleMin;
 
-    @JsonProperty("idle.max")
+    @Field(name = "idle.max", type = FieldType.Double)
     private Double idleMax;
 
-    @JsonProperty("idle.avg")
+    @Field(name = "idle.avg", type = FieldType.Double)
     private Double idleMean;
 
-    @JsonProperty("idle.std")
+    @Field(name = "idle.std", type = FieldType.Double)
     private Double idleStd;
 
-    @JsonProperty("idle.tot")
+    @Field(name = "idle.tot", type = FieldType.Double)
     private Double idleTotal;
 
-    @JsonProperty("fwd_init_window_size")
+    // Subflow
+    @Field(name = "fwd_subflow_pkts", type = FieldType.Double)
+    private Double subflowFwdPackets;
+
+    @Field(name = "fwd_subflow_bytes", type = FieldType.Double)
+    private Double subflowFwdBytes;
+
+    @Field(name = "bwd_subflow_pkts", type = FieldType.Double)
+    private Double subflowBwdPackets;
+
+    @Field(name = "bwd_subflow_bytes", type = FieldType.Double)
+    private Double subflowBwdBytes;
+
+    // Bulk
+    @Field(name = "fwd_bulk_bytes", type = FieldType.Double)
+    private Double fwdBulkBytes;
+
+    @Field(name = "bwd_bulk_bytes", type = FieldType.Double)
+    private Double bwdBulkBytes;
+
+    @Field(name = "fwd_bulk_packets", type = FieldType.Double)
+    private Double fwdBulkPackets;
+
+    @Field(name = "bwd_bulk_packets", type = FieldType.Double)
+    private Double bwdBulkPackets;
+
+    @Field(name = "fwd_bulk_rate", type = FieldType.Double)
+    private Double fwdBulkRate;
+
+    @Field(name = "bwd_bulk_rate", type = FieldType.Double)
+    private Double bwdBulkRate;
+
+    // Init window
+    @Field(name = "fwd_init_window_size", type = FieldType.Integer)
     private Integer initWindowBytesForward;
 
-    @JsonProperty("bwd_init_window_size")
+    @Field(name = "bwd_init_window_size", type = FieldType.Integer)
     private Integer initWindowBytesBackward;
 
-    @JsonProperty("fwd_last_window_size")
+    @Field(name = "fwd_last_window_size", type = FieldType.Integer)
     private Integer fwdLastWindowSize;
 
-    @JsonProperty("bwd_last_window_size")
+    @Field(name = "bwd_last_window_size", type = FieldType.Integer)
     private Integer bwdLastWindowSize;
 }
