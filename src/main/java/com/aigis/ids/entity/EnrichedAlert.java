@@ -20,9 +20,6 @@ import java.util.UUID;
 @Document(indexName = "enriched_alert")
 public class EnrichedAlert {
 
-    @Id
-    private String id = UUID.randomUUID().toString();
-
     private String evaluation;
 
     private String ioc;

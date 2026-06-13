@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Slf4j
-    @RestController
-    @RequestMapping("/webhook")
-    @RequiredArgsConstructor
-    public class SnortController {
+@RestController
+@RequestMapping("/webhook")
+@RequiredArgsConstructor
+public class SnortController {
 
         private final RawAlertRepository alertRepository;
 
