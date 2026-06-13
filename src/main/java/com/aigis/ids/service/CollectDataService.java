@@ -28,16 +28,16 @@ public class CollectDataService {
         String sourceIp = rawAlert.getSourceIp();
         String sourcePort = rawAlert.getSourcePort();
         String destinationIp = rawAlert.getDestinationIp();
-        String destiantionPort = rawAlert.getDestinationPort();
+        String destinationPort = rawAlert.getDestinationPort();
 
          ConnLogZeek connLogZeek;
         log.info("Поиск сетевого лога связанного с алертом ID"+rawAlert.getId());
-         if (sourcePort == null && destiantionPort == null) {
+         if (sourcePort == null && destinationPort == null) {
              // ICMP — ищем только по IP без портов
             connLogZeek = connLogZeekRepository.findConnectionByIp(sourceIp, destinationIp)
                      .orElseThrow(() -> new RuntimeException("Zeek лог не найден для ICMP соединения"));
          } else {
-             connLogZeek = connLogZeekRepository.findConnection(sourceIp, sourcePort, destinationIp, destiantionPort)
+             connLogZeek = connLogZeekRepository.findConnection(sourceIp, sourcePort, destinationIp, destinationPort)
                      .orElseThrow(() -> new RuntimeException("Zeek лог не найден для соединения"));
          }
 

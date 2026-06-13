@@ -93,7 +93,7 @@ public class IPSearchInformationService {
     public void analyzeIP(String ip) {
         if(virusRepo.existsByIpAddress(ip)&&abuseRepo.existsByIpAddress(ip)){
           log.info("Данные по  адресу {} уже есть в ElasticSearch.Дальнейший анализ будет пропущен",ip);
-        }else {
+        } else {
             if (isPublicIp(ip)) {
                 log.info("Адрес является публичным:" + ip);
                 log.info("Идет проверка адреса через сервисы AbuseIPDB & VirusTotal");

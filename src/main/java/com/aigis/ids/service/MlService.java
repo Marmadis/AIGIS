@@ -9,6 +9,9 @@ import com.aigis.ids.repository.VirusTotalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -16,6 +19,7 @@ import static java.lang.Thread.sleep;
 
 @Slf4j
 @Service
+@Async
 @RequiredArgsConstructor
 public class MlService {
     private final RestClient mlClient;
@@ -34,7 +38,6 @@ public class MlService {
             // 1. Получаем данные (из БД или по API)
             ipSearchService.analyzeIP(alert.getSourceIp());
             ipSearchService.analyzeIP(alert.getDestinationIp());
-            sleep(15000);
             AbuseInfo abuseSource = abuseRepository.findByIpAddress(alert.getSourceIp()).
                     orElseThrow(() -> new Exception("Информация об AbuseInfo не найдена для IP: " +alert.getSourceIp()));
             VirusTotalInfo vtSource = virusTotalRepository.findByIpAddress(alert.getSourceIp())
@@ -51,7 +54,7 @@ public class MlService {
                     abuseSource,abuseDestination,vtSource,vtDestination);
 
 
-            log.info("[TEST] Данные которые были скомпилированы NetworkFeatures:"+networkFeaturesDTO);
+            log.info("[TEST] Данные которые были скомпилированы NetworkFeatures:{}",networkFeaturesDTO);
             // 4. Отправляем в ML
             EnrichedAlert enrichedAlert = mlClient.post()
                     .uri("/predict")
@@ -65,7 +68,7 @@ public class MlService {
                         enrichedAlert.getConfidenceScore());
                 enrichedAlertRepository.save(enrichedAlert);
                 if(enrichedAlert.getIoc() != null){
-                    log.info("Обнаружен индикатор компроментации:"+enrichedAlert.getIoc());
+                    log.info("Обнаружен индикатор компроментации:{}",enrichedAlert.getIoc());
                     if(iocRepository.existsByIpAddress(enrichedAlert.getIoc())){
                         log.info("Данный индикатор уже существует в ElasticSearch");
                     }else{
@@ -74,7 +77,7 @@ public class MlService {
                         indicatorOfCompromise.setAlertId(enrichedAlert.getId());
                         indicatorOfCompromise.setIpAddress(enrichedAlert.getIoc());
                         indicatorOfCompromise.setMessage("Source IP Verdict:"+enrichedAlert.getDetails().getSource().getVerdict()+"" +
-                                " | Destination IP Verdict"+enrichedAlert.getDetails().getSource().getVerdict());
+                                " | Destination IP Verdict"+enrichedAlert.getDetails().getDestination().getVerdict());
                         iocRepository.save(indicatorOfCompromise);
                     }
                 }

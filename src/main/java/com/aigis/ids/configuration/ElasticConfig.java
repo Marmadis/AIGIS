@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class ElastichConfig {
+public class ElasticConfig {
 
         @Value("${spring.elasticsearch.uris:http://elasticsearch:9200}")
         private String elasticUrl;

@@ -35,8 +35,7 @@ public class ApiController {
     }
 
     @PostMapping("/search/{ip}")
-    public ResponseEntity<String> searchTest(@PathVariable String ip){
+    public void searchTest(@PathVariable String ip){
         ipSearchInformationService.analyzeIP(ip);
-        return ResponseEntity.ok("OK");
     }
 }

@@ -19,7 +19,7 @@ public interface NetworkFeaturesMapper {
 
         NetworkFeaturesDTO dto = new NetworkFeaturesDTO();
         dto.setSource(mapToEndpoint(zeek, srcIp, srcPort, dstPort, srcAbuse, srcVt));
-        dto.setDestination(mapToEndpoint(zeek, dstIp, srcPort, dstPort, dstAbuse, dstVt));
+        dto.setDestination(mapToEndpoint(zeek, dstIp, dstPort, srcPort, dstAbuse, dstVt));
         return dto;
     }
 
